@@ -3,10 +3,11 @@ import { api, API_LOGIN } from "../Api/Api";
 import { useNavigate } from "react-router-dom";
 // import { saveTokenToLocalStorage } from "../Storage/Storage";
 import axios from "axios";
+import { saveTokenToLocalStorage } from "../Storage/Storage";
 
 export function useLogin() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("johnd");
+  const [password, setPassword] = useState("m38rmF$");
   const navigate = useNavigate();
 
   const handleChange = (event) => {
@@ -36,20 +37,20 @@ export function useLogin() {
       });
 
       if (response && response.data) {
-        const { token } = response.data;        
+        const { token } = response.data;
+        const userResponse = await axios.get(
+          "https://fakestoreapi.com/users/",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
-        const userResponse = await axios.get('https://fakestoreapi.com/users/', {
-          headers: {Authorization : `Bearer ${token}`}
-        })
-
-        if(userResponse && userResponse.data){
+        if (userResponse && userResponse.data) {
           const userLogin = userResponse.data;
           const user = userLogin.find((us) => us.username === username);
-          navigate('/', {state: {user}});
-          
+          navigate("/", { state: { user } });
         }
       }
-
     } catch (error) {
       console.error("No se pudo iniciar sesion", error);
     }

@@ -2,9 +2,15 @@ import { useContexts } from "../../../Hooks/useContexts";
 import person from "../../../assets/person.svg";
 import close from "../../../assets/close.svg";
 import "./user.css";
+import { useNavigate } from "react-router-dom";
 
 export function User() {
   const { userDetails, handleCloseShowModal } = useContexts();
+  const navigate = useNavigate();
+
+  const handleCloseSession = () => {
+    navigate("/")
+  }
 
   console.log(userDetails);
   return (
@@ -23,7 +29,7 @@ export function User() {
               <p>{userDetails.email}</p>
             </div>
           </div>
-          <div className="account__closeSession">
+          <div className="account__closeSession" onClick={handleCloseSession}>
             <p>Sign off</p>
           </div>
         </>
